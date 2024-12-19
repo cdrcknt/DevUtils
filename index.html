@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevUtils - Developer Utilities</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prettier/2.8.8/standalone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prettier/2.8.8/parser-babel.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4L4 8l8 4 8-4-8-4zm-8 8l8 4 8-4M4 16l8 4 8-4"/>
+                </svg>
+                <span>DevUtils</span>
+            </div>
+            <nav>
+                <button class="nav-item active" data-tool="json">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10m-10 4h10m-10 4h10"/>
+                    </svg>
+                    JSON Formatter
+                </button>
+                <button class="nav-item" data-tool="base64">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10M9 7v10m5-10v10m5-10v10"/>
+                    </svg>
+                    Base64 Converter
+                </button>
+                <button class="nav-item" data-tool="url">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                    </svg>
+                    URL Encoder
+                </button>
+                <button class="nav-item" data-tool="hash">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 9h16M4 15h16M10 3L8 21m8-18l-2 18"/>
+                    </svg>
+                    Hash Generator
+                </button>
+            </nav>
+        </div>
+
+        <div class="content-wrapper">
+            <main>
+                <div class="tool-container active" id="json-tool">
+                    <div class="tool-header">
+                        <h2>JSON Formatter & Validator</h2>
+                        <div class="actions">
+                            <button class="btn" id="format-json">Format</button>
+                            <button class="btn" id="minify-json">Minify</button>
+                            <button class="btn" id="copy-json">Copy</button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <textarea id="json-input" placeholder="Paste your JSON here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="tool-container" id="base64-tool">
+                    <div class="tool-header">
+                        <h2>Base64 Encoder/Decoder</h2>
+                        <div class="actions">
+                            <button class="btn" id="encode-base64">Encode</button>
+                            <button class="btn" id="decode-base64">Decode</button>
+                            <button class="btn" id="copy-base64">Copy</button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <textarea id="base64-input" placeholder="Enter text to encode/decode..."></textarea>
+                    </div>
+                </div>
+
+                <div class="tool-container" id="url-tool">
+                    <div class="tool-header">
+                        <h2>URL Encoder/Decoder</h2>
+                        <div class="actions">
+                            <button class="btn" id="encode-url">Encode</button>
+                            <button class="btn" id="decode-url">Decode</button>
+                            <button class="btn" id="copy-url">Copy</button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <textarea id="url-input" placeholder="Enter URL to encode/decode..."></textarea>
+                    </div>
+                </div>
+
+                <div class="tool-container" id="hash-tool">
+                    <div class="tool-header">
+                        <h2>Hash Generator</h2>
+                        <div class="actions">
+                            <select id="hash-algorithm">
+                                <option value="MD5">MD5</option>
+                                <option value="SHA-1">SHA-1</option>
+                                <option value="SHA-256">SHA-256</option>
+                                <option value="SHA-512">SHA-512</option>
+                            </select>
+                            <button class="btn" id="generate-hash">Generate</button>
+                            <button class="btn" id="copy-hash">Copy</button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <textarea id="hash-input" placeholder="Enter text to hash..."></textarea>
+                        <div id="hash-output" class="hash-output"></div>
+                    </div>
+                </div>
+            </main>
+
+            <div class="main-footer">
+                <div class="footer-content">
+                    <div class="footer-text">
+                        &copy; 2023 DevUtils. All rights reserved.
+                    </div>
+                    <div class="social-links">
+                        <a href="https://github.com/cdrcknt" class="social-icon">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/cedric-kent-centeno-8a9951274/" target="_blank" rel="noopener noreferrer" class="social-icon">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://x.com/cdrcknt" class="social-icon">
+                            <i class="fab fa-x-twitter"></i>
+                        </a>
+                        <a href="mailto:cdrcknt@gmail.com" class="social-icon">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
