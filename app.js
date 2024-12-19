@@ -171,4 +171,260 @@ function copyToClipboard(element) {
 // Add dark mode to syntax highlighting
 document.addEventListener('DOMContentLoaded', () => {
     hljs.highlightAll();
+
 });
+
+const caseInput = document.getElementById('case-input');
+const uppercaseBtn = document.getElementById('uppercase');
+const lowercaseBtn = document.getElementById('lowercase');
+const titlecaseBtn = document.getElementById('titlecase');
+const sentencecaseBtn = document.getElementById('sentencecase');
+const copyCaseBtn = document.getElementById('copy-case');
+
+uppercaseBtn.addEventListener('click', () => {
+    caseInput.value = caseInput.value.toUpperCase();
+});
+
+lowercaseBtn.addEventListener('click', () => {
+    caseInput.value = caseInput.value.toLowerCase();
+});
+
+titlecaseBtn.addEventListener('click', () => {
+    caseInput.value = caseInput.value
+        .toLowerCase()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+});
+
+sentencecaseBtn.addEventListener('click', () => {
+    caseInput.value = caseInput.value
+        .toLowerCase()
+        .split('. ')
+        .map(sentence => sentence.charAt(0).toUpperCase() + sentence.slice(1))
+        .join('. ');
+});
+
+copyCaseBtn.addEventListener('click', () => {
+    copyToClipboard(caseInput);
+});
+
+// Lorem Ipsum Generator
+const loremType = document.getElementById('lorem-type');
+const loremCount = document.getElementById('lorem-count');
+const generateLoremBtn = document.getElementById('generate-lorem');
+const copyLoremBtn = document.getElementById('copy-lorem');
+const loremOutput = document.getElementById('lorem-output');
+
+const words = [
+    "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
+    "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore",
+    "magna", "aliqua"
+];
+
+function generateWord() {
+    return words[Math.floor(Math.random() * words.length)];
+}
+
+function generateSentence() {
+    const length = Math.floor(Math.random() * 10) + 5;
+    let sentence = generateWord().charAt(0).toUpperCase() + generateWord().slice(1);
+    for (let i = 1; i < length; i++) {
+        sentence += ' ' + generateWord();
+    }
+    return sentence + '.';
+}
+
+function generateParagraph() {
+    const length = Math.floor(Math.random() * 5) + 3;
+    return Array(length).fill().map(() => generateSentence()).join(' ');
+}
+
+generateLoremBtn.addEventListener('click', () => {
+    const count = parseInt(loremCount.value);
+    const type = loremType.value;
+    let result = '';
+
+    switch (type) {
+        case 'words':
+            result = Array(count).fill().map(() => generateWord()).join(' ');
+            break;
+        case 'sentences':
+            result = Array(count).fill().map(() => generateSentence()).join(' ');
+            break;
+        case 'paragraphs':
+            result = Array(count).fill().map(() => generateParagraph()).join('\n\n');
+            break;
+    }
+
+    loremOutput.value = result;
+});
+
+copyLoremBtn.addEventListener('click', () => {
+    copyToClipboard(loremOutput);
+});
+
+// Color Converter
+const colorPicker = document.getElementById('color-picker');
+const colorInput = document.getElementById('color-input');
+const convertColorBtn = document.getElementById('convert-color');
+const copyColorBtn = document.getElementById('copy-color');
+const colorPreview = document.querySelector('.color-preview');
+const colorValues = document.querySelector('.color-values');
+
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+function rgbToHsl(r, g, b) {
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+
+    if (max === min) {
+        h = s = 0;
+    } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+
+    return {
+        h: Math.round(h * 360),
+        s: Math.round(s * 100),
+        l: Math.round(l * 100)
+    };
+}
+
+function updateColorDisplay(hex) {
+    const rgb = hexToRgb(hex);
+    const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+
+    colorPreview.style.backgroundColor = hex;
+    colorValues.innerHTML = `
+        <div class="color-value">HEX: ${hex}</div>
+        <div class="color-value">RGB: rgb(${rgb.r}, ${rgb.g}, ${rgb.b})</div>
+        <div class="color-value">HSL: hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)</div>
+    `;
+}
+
+colorPicker.addEventListener('input', (e) => {
+    colorInput.value = e.target.value;
+    updateColorDisplay(e.target.value);
+});
+
+colorInput.addEventListener('input', (e) => {
+    if (e.target.value.match(/^#[0-9A-Fa-f]{6}$/)) {
+        colorPicker.value = e.target.value;
+        updateColorDisplay(e.target.value);
+    }
+});
+
+convertColorBtn.addEventListener('click', () => {
+    if (colorInput.value.match(/^#[0-9A-Fa-f]{6}$/)) {
+        updateColorDisplay(colorInput.value);
+    } else {
+        alert('Please enter a valid hex color (e.g., #FF0000)');
+    }
+});
+
+copyColorBtn.addEventListener('click', () => {
+    const values = Array.from(colorValues.querySelectorAll('.color-value'))
+        .map(div => div.textContent)
+        .join('\n');
+    navigator.clipboard.writeText(values);
+    copyColorBtn.textContent = 'Copied!';
+    setTimeout(() => {
+        copyColorBtn.textContent = 'Copy';
+    }, 1500);
+});
+
+// Password Generator
+const passwordLength = document.getElementById('password-length');
+const includeUppercase = document.getElementById('include-uppercase');
+const includeLowercase = document.getElementById('include-lowercase');
+const includeNumbers = document.getElementById('include-numbers');
+const includeSymbols = document.getElementById('include-symbols');
+const generatePasswordBtn = document.getElementById('generate-password');
+const copyPasswordBtn = document.getElementById('copy-password');
+const generatedPassword = document.getElementById('generated-password');
+const passwordStrength = document.getElementById('password-strength');
+
+const charset = {
+    uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    lowercase: 'abcdefghijklmnopqrstuvwxyz',
+    numbers: '0123456789',
+    symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?'
+};
+
+function generatePassword() {
+    let chars = '';
+    let password = '';
+
+    if (!includeUppercase.checked && !includeLowercase.checked && 
+        !includeNumbers.checked && !includeSymbols.checked) {
+        alert('Please select at least one character type');
+        return;
+    }
+
+    if (includeUppercase.checked) chars += charset.uppercase;
+    if (includeLowercase.checked) chars += charset.lowercase;
+    if (includeNumbers.checked) chars += charset.numbers;
+    if (includeSymbols.checked) chars += charset.symbols;
+
+    for (let i = 0; i < passwordLength.value; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    return password;
+}
+
+function checkPasswordStrength(password) {
+    let score = 0;
+    
+    if (password.length >= 12) score++;
+    if (password.match(/[A-Z]/)) score++;
+    if (password.match(/[a-z]/)) score++;
+    if (password.match(/[0-9]/)) score++;
+    if (password.match(/[^A-Za-z0-9]/)) score++;
+
+    passwordStrength.className = 'password-strength';
+    if (score <= 2) passwordStrength.classList.add('weak');
+    else if (score <= 4) passwordStrength.classList.add('medium');
+    else passwordStrength.classList.add('strong');
+}
+
+generatePasswordBtn.addEventListener('click', () => {
+    const password = generatePassword();
+    if (password) {
+        generatedPassword.value = password;
+        checkPasswordStrength(password);
+    }
+});
+
+copyPasswordBtn.addEventListener('click', () => {
+    if (generatedPassword.value) {
+        navigator.clipboard.writeText(generatedPassword.value);
+        copyPasswordBtn.textContent = 'Copied!';
+        setTimeout(() => {
+            copyPasswordBtn.textContent = 'Copy';
+        }, 1500);
+    }
+});
+
+// Initialize the first color preview
+updateColorDisplay('#000000');

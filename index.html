@@ -45,11 +45,36 @@
                     </svg>
                     Hash Generator
                 </button>
+                <button class="nav-item" data-tool="case">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19h16M4 15h16M9 11h6"/>
+                    </svg>
+                    Text Case Converter
+                </button>
+                <button class="nav-item" data-tool="lorem">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 11h16M4 15h16"/>
+                    </svg>
+                    Lorem Ipsum Generator
+                </button>
+                <button class="nav-item" data-tool="color">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v18M3 12h18"/>
+                    </svg>
+                    Color Converter
+                </button>
+                <button class="nav-item" data-tool="password">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3a9 9 0 0 0-9 9v9h18v-9a9 9 0 0 0-9-9z"/>
+                    </svg>
+                    Password Generator
+                </button>
             </nav>
         </div>
 
         <div class="content-wrapper">
             <main>
+                <!-- Existing tools -->
                 <div class="tool-container active" id="json-tool">
                     <div class="tool-header">
                         <h2>JSON Formatter & Validator</h2>
@@ -111,12 +136,101 @@
                         <div id="hash-output" class="hash-output"></div>
                     </div>
                 </div>
+
+                <!-- New tools -->
+                <div class="tool-container" id="case-tool">
+                    <div class="tool-header">
+                        <h2>Text Case Converter</h2>
+                        <div class="actions">
+                            <button class="btn" id="uppercase">UPPERCASE</button>
+                            <button class="btn" id="lowercase">lowercase</button>
+                            <button class="btn" id="titlecase">Title Case</button>
+                            <button class="btn" id="sentencecase">Sentence case</button>
+                            <button class="btn" id="copy-case">Copy</button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <textarea id="case-input" placeholder="Enter text to convert..."></textarea>
+                    </div>
+                </div>
+
+                <div class="tool-container" id="lorem-tool">
+                    <div class="tool-header">
+                        <h2>Lorem Ipsum Generator</h2>
+                        <div class="actions">
+                            <select id="lorem-type">
+                                <option value="words">Words</option>
+                                <option value="sentences">Sentences</option>
+                                <option value="paragraphs">Paragraphs</option>
+                            </select>
+                            <input type="number" id="lorem-count" class="number-input" value="5" min="1" max="100">
+                            <button class="btn" id="generate-lorem">Generate</button>
+                            <button class="btn" id="copy-lorem">Copy</button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <textarea id="lorem-output" placeholder="Generated text will appear here..." readonly></textarea>
+                    </div>
+                </div>
+
+                <div class="tool-container" id="color-tool">
+                    <div class="tool-header">
+                        <h2>Color Converter</h2>
+                        <div class="actions">
+                            <input type="color" id="color-picker" class="color-input" value="#000000">
+                            <input type="text" id="color-input" class="text-input" placeholder="#000000" value="#000000">
+                            <button class="btn" id="convert-color">Convert</button>
+                            <button class="btn" id="copy-color">Copy</button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <div class="color-output">
+                            <div class="color-preview"></div>
+                            <div class="color-values"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-container" id="password-tool">
+                    <div class="tool-header">
+                        <h2>Password Generator</h2>
+                        <div class="actions">
+                            <input type="number" id="password-length" class="number-input" value="12" min="4" max="64">
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="include-uppercase" checked>
+                                    ABC
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="include-lowercase" checked>
+                                    abc
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="include-numbers" checked>
+                                    123
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="include-symbols" checked>
+                                    #$&
+                                </label>
+                            </div>
+                            <button class="btn" id="generate-password">Generate</button>
+                            <button class="btn" id="copy-password">Copy</button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <div class="password-output">
+                            <input type="text" id="generated-password" readonly>
+                            <div id="password-strength" class="password-strength"></div>
+                        </div>
+                    </div>
+                </div>
             </main>
 
             <div class="main-footer">
                 <div class="footer-content">
                     <div class="footer-text">
-                        &copy; 2024 DevUtils. All rights resered.
+                        &copy; 2024 DevUtils. All rights reserved.
                     </div>
                     <div class="social-links">
                         <a href="https://github.com/cdrcknt" class="social-icon">
@@ -125,7 +239,7 @@
                         <a href="https://www.linkedin.com/in/cedric-kent-centeno-8a9951274/" target="_blank" rel="noopener noreferrer" class="social-icon">
                             <i class="fab fa-linkedin"></i>
                         </a>
-                        <a href="https://x.com/cdrcknt" class="social-icon">
+                        <a href="https://x.com" class="social-icon">
                             <i class="fab fa-x-twitter"></i>
                         </a>
                         <a href="mailto:cdrcknt@gmail.com" class="social-icon">
