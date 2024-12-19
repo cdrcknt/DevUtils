@@ -91,6 +91,10 @@ To modify or enhance the application:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+## Developers
+
+Cedric Kent Centeno
+
 ## Contact
 
 For any queries or suggestions, please reach out through:

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevUtils - Developer Utilities</title>
+    <title>DevUtils - Free Developer Utilities Online</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -18,7 +18,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4L4 8l8 4 8-4-8-4zm-8 8l8 4 8-4M4 16l8 4 8-4"/>
                 </svg>
-                <span>DevUtils</span>
+                <span>DevUtils Online</span>
             </div>
             <nav>
                 <button class="nav-item active" data-tool="json">
@@ -68,6 +68,30 @@
                         <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3a9 9 0 0 0-9 9v9h18v-9a9 9 0 0 0-9-9z"/>
                     </svg>
                     Password Generator
+                </button>
+                <button class="nav-item" data-tool="diff">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3h5v5M4 20L21 3M21 16v5h-5M4 4L9 9M4 16L9 21"/>
+                    </svg>
+                    Text Diff Checker
+                </button>
+                <button class="nav-item" data-tool="xml">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 18l6-6-6-6M8 6l-6 6 6 6M3 12h18"/>
+                    </svg>
+                    XML Formatter
+                </button>
+                <button class="nav-item" data-tool="csv">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16M4 8h16M4 12h16M4 16h16M4 20h16"/>
+                    </svg>
+                    CSV to JSON
+                </button>
+                <button class="nav-item" data-tool="number">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 9h16M4 15h16M8 5v14M16 5v14"/>
+                    </svg>
+                    Number Base
                 </button>
             </nav>
         </div>
@@ -225,12 +249,92 @@
                         </div>
                     </div>
                 </div>
+                <div class="tool-container" id="diff-tool">
+                    <div class="tool-header">
+                        <h2>Text Diff Checker</h2>
+                        <div class="actions">
+                            <button class="btn" id="compare-diff">Compare</button>
+                            <button class="btn" id="copy-diff">Copy</button>
+                        </div>
+                    </div>
+                    <div class="diff-editor-container">
+                        <div class="diff-col">
+                            <h3>Original Text</h3>
+                            <textarea id="original-text" placeholder="Enter original text..."></textarea>
+                        </div>
+                        <div class="diff-col">
+                            <h3>Modified Text</h3>
+                            <textarea id="modified-text" placeholder="Enter modified text..."></textarea>
+                        </div>
+                    </div>
+                    <div id="diff-output" class="diff-output"></div>
+                </div>
+                
+                <div class="tool-container" id="xml-tool">
+                    <div class="tool-header">
+                        <h2>XML Formatter</h2>
+                        <div class="actions">
+                            <button class="btn" id="format-xml">Format</button>
+                            <button class="btn" id="minify-xml">Minify</button>
+                            <button class="btn" id="copy-xml">Copy</button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <textarea id="xml-input" placeholder="Paste your XML here..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="tool-container" id="csv-tool">
+                    <div class="tool-header">
+                        <h2>CSV to JSON Converter</h2>
+                        <div class="actions">
+                            <label class="csv-options">
+                                <input type="checkbox" id="first-row-headers" checked>
+                                First row as headers
+                            </label>
+                            <button class="btn" id="convert-csv">Convert</button>
+                            <button class="btn" id="copy-csv">Copy</button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <textarea id="csv-input" placeholder="Paste your CSV here..."></textarea>
+                        <div id="json-output" class="json-output"></div>
+                    </div>
+                </div>
+                
+                <div class="tool-container" id="number-tool">
+                    <div class="tool-header">
+                        <h2>Number Base Converter</h2>
+                        <div class="actions">
+                            <select id="from-base">
+                                <option value="2">Binary (2)</option>
+                                <option value="8">Octal (8)</option>
+                                <option value="10" selected>Decimal (10)</option>
+                                <option value="16">Hexadecimal (16)</option>
+                            </select>
+                            <select id="to-base">
+                                <option value="2">Binary (2)</option>
+                                <option value="8">Octal (8)</option>
+                                <option value="10">Decimal (10)</option>
+                                <option value="16" selected>Hexadecimal (16)</option>
+                            </select>
+                            <button class="btn" id="convert-number">Convert</button>
+                            <button class="btn" id="copy-number">Copy</button>
+                        </div>
+                    </div>
+                    <div class="number-converter-container">
+                        <div class="number-input-group">
+                            <input type="text" id="number-input" placeholder="Enter a number...">
+                            <input type="text" id="number-output" readonly>
+                        </div>
+                    </div>
+                </div>
             </main>
 
             <div class="main-footer">
                 <div class="footer-content">
                     <div class="footer-text">
-                        &copy; 2024 DevUtils. All rights reserved.
+                        &copy; 2024 DevUtils Online. All rights reserved.
                     </div>
                     <div class="social-links">
                         <a href="https://github.com/cdrcknt" class="social-icon">

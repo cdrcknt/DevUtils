@@ -428,3 +428,185 @@ copyPasswordBtn.addEventListener('click', () => {
 
 // Initialize the first color preview
 updateColorDisplay('#000000');
+
+// Text Diff Checker
+const originalText = document.getElementById('original-text');
+const modifiedText = document.getElementById('modified-text');
+const compareDiffBtn = document.getElementById('compare-diff');
+const copyDiffBtn = document.getElementById('copy-diff');
+const diffOutput = document.getElementById('diff-output');
+
+function generateDiff(original, modified) {
+    const originalLines = original.split('\n');
+    const modifiedLines = modified.split('\n');
+    let output = '';
+
+    const diff = [];
+    let i = 0, j = 0;
+
+    while (i < originalLines.length || j < modifiedLines.length) {
+        if (i >= originalLines.length) {
+            diff.push({ type: 'added', line: modifiedLines[j] });
+            j++;
+        } else if (j >= modifiedLines.length) {
+            diff.push({ type: 'removed', line: originalLines[i] });
+            i++;
+        } else if (originalLines[i] === modifiedLines[j]) {
+            diff.push({ type: 'unchanged', line: originalLines[i] });
+            i++;
+            j++;
+        } else {
+            diff.push({ type: 'removed', line: originalLines[i] });
+            diff.push({ type: 'added', line: modifiedLines[j] });
+            i++;
+            j++;
+        }
+    }
+
+    return diff.map(d => {
+        const prefix = d.type === 'added' ? '+ ' : d.type === 'removed' ? '- ' : '  ';
+        const className = d.type === 'added' ? 'diff-added' : d.type === 'removed' ? 'diff-removed' : '';
+        return `<div class="diff-line ${className}">${prefix}${d.line}</div>`;
+    }).join('');
+}
+
+compareDiffBtn.addEventListener('click', () => {
+    diffOutput.innerHTML = generateDiff(originalText.value, modifiedText.value);
+});
+
+copyDiffBtn.addEventListener('click', () => {
+    const diffText = diffOutput.textContent;
+    navigator.clipboard.writeText(diffText);
+    copyDiffBtn.textContent = 'Copied!';
+    setTimeout(() => {
+        copyDiffBtn.textContent = 'Copy';
+    }, 1500);
+});
+
+// XML Formatter
+const xmlInput = document.getElementById('xml-input');
+const formatXmlBtn = document.getElementById('format-xml');
+const minifyXmlBtn = document.getElementById('minify-xml');
+const copyXmlBtn = document.getElementById('copy-xml');
+
+function formatXML(xml) {
+    let formatted = '';
+    let indent = '';
+    const tab = '    ';
+    xml.split(/>\s*</).forEach(node => {
+        if (node.match(/^\/\w/)) {
+            indent = indent.substring(tab.length);
+        }
+        formatted += indent + '<' + node + '>\r\n';
+        if (node.match(/^<?\w[^>]*[^\/]$/)) {
+            indent += tab;
+        }
+    });
+    return formatted.substring(1, formatted.length - 3);
+}
+
+formatXmlBtn.addEventListener('click', () => {
+    try {
+        xmlInput.value = formatXML(xmlInput.value.trim());
+    } catch (error) {
+        alert('Invalid XML: ' + error.message);
+    }
+});
+
+minifyXmlBtn.addEventListener('click', () => {
+    try {
+        xmlInput.value = xmlInput.value
+            .replace(/>\s+</g, '><')
+            .replace(/\s+/g, ' ')
+            .trim();
+    } catch (error) {
+        alert('Invalid XML: ' + error.message);
+    }
+});
+
+copyXmlBtn.addEventListener('click', () => {
+    copyToClipboard(xmlInput);
+});
+
+// CSV to JSON Converter
+const csvInput = document.getElementById('csv-input');
+const firstRowHeaders = document.getElementById('first-row-headers');
+const convertCsvBtn = document.getElementById('convert-csv');
+const copyCsvBtn = document.getElementById('copy-csv');
+const jsonOutput = document.getElementById('json-output');
+
+function csvToJson(csv, headers = true) {
+    const lines = csv.split('\n').map(line => 
+        line.split(',').map(cell => 
+            cell.trim().replace(/^["'](.*)["']$/, '$1')
+        )
+    );
+    
+    if (lines.length < 2) return [];
+    
+    const headerRow = headers ? lines.shift() : 
+        Array.from({ length: lines[0].length }, (_, i) => `column${i + 1}`);
+    
+    return lines.map(line => {
+        const obj = {};
+        headerRow.forEach((header, i) => {
+            obj[header] = line[i] || '';
+        });
+        return obj;
+    });
+}
+
+convertCsvBtn.addEventListener('click', () => {
+    try {
+        const json = csvToJson(csvInput.value, firstRowHeaders.checked);
+        jsonOutput.textContent = JSON.stringify(json, null, 2);
+    } catch (error) {
+        alert('Invalid CSV: ' + error.message);
+    }
+});
+
+copyCsvBtn.addEventListener('click', () => {
+    if (jsonOutput.textContent) {
+        navigator.clipboard.writeText(jsonOutput.textContent);
+        copyCsvBtn.textContent = 'Copied!';
+        setTimeout(() => {
+            copyCsvBtn.textContent = 'Copy';
+        }, 1500);
+    }
+});
+
+// Number Base Converter
+const numberInput = document.getElementById('number-input');
+const numberOutput = document.getElementById('number-output');
+const fromBase = document.getElementById('from-base');
+const toBase = document.getElementById('to-base');
+const convertNumberBtn = document.getElementById('convert-number');
+const copyNumberBtn = document.getElementById('copy-number');
+
+function convertBase(num, fromBase, toBase) {
+    const decimal = parseInt(num.toString(), fromBase);
+    return decimal.toString(toBase).toUpperCase();
+}
+
+convertNumberBtn.addEventListener('click', () => {
+    try {
+        const result = convertBase(
+            numberInput.value,
+            parseInt(fromBase.value),
+            parseInt(toBase.value)
+        );
+        numberOutput.value = result;
+    } catch (error) {
+        alert('Invalid number for the selected base');
+    }
+});
+
+copyNumberBtn.addEventListener('click', () => {
+    if (numberOutput.value) {
+        navigator.clipboard.writeText(numberOutput.value);
+        copyNumberBtn.textContent = 'Copied!';
+        setTimeout(() => {
+            copyNumberBtn.textContent = 'Copy';
+        }, 1500);
+    }
+});
