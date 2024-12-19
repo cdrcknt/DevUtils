@@ -25,6 +25,30 @@ DevUtils is a comprehensive web-based toolkit for developers that provides essen
   - Real-time hash generation
   - Copy hash results to clipboard
 
+- **Text Case Converter**
+  - Convert text between different cases (e.g., uppercase, lowercase, title case)
+
+- **Lorem Ipsum Generator**
+  - Generate placeholder text for use in design or development
+
+- **Color Converter**
+  - Convert color values between different formats (e.g., HEX, RGB, HSL)
+
+- **Password Generator**
+  - Generate strong, random passwords with customizable length and character sets
+
+- **Text Diff Checker**
+  - Compare two text blocks and highlight differences
+
+- **XML Formatter**
+  - Format and beautify XML data for easy readability
+
+- **CSV to JSON Converter**
+  - Convert CSV data to JSON format
+
+- **Number Base Converter**
+  - Convert numbers between different bases (e.g., binary, decimal, hexadecimal)
+
 ## Technologies Used
 
 - HTML5
